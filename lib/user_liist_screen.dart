@@ -16,39 +16,6 @@ class _UserListScreenState extends State<UserListScreen> {
     BlocProvider.of<UserBloc>(context).add(GetUserData());
   }
 
-  Future<void> showDeleteConfirmationDialog(int userId) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Are you sure you want to delete this user?'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +82,8 @@ class _UserListScreenState extends State<UserListScreen> {
                               context: context,
                               builder: (context1) {
                                 return AlertDialog(
-                                  title: const Text("are you sure want to delete"),
+                                  title:
+                                      const Text("are you sure want to delete"),
                                   actions: [
                                     TextButton(
                                         onPressed: () {
@@ -124,8 +92,10 @@ class _UserListScreenState extends State<UserListScreen> {
                                         child: const Text('NO')),
                                     TextButton(
                                       onPressed: () {
-                                          BlocProvider.of<UserBloc>(context).add(
-                                          DeleteUser(id: state.userData[index].id ?? 0));
+                                        BlocProvider.of<UserBloc>(context).add(
+                                            DeleteUser(
+                                                id: state.userData[index].id ??
+                                                    0));
                                         Navigator.pop(context);
                                       },
                                       child: const Text('Yes'),

@@ -44,6 +44,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             .toList();
         print('updateUserDateBlocCalled');
         print(event.userData.name);
+        print(event.userData.gender);
         emit(UserFetched(userData: userData));
       } catch (e) {
         print(e.toString());

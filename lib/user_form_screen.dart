@@ -30,17 +30,20 @@ class AddEditUserScreenState extends State<AddEditUserScreen> {
   @override
   void initState() {
     super.initState();
-
-    if (widget.isEditing) {
-      _nameController.text = widget.userData?.name ?? "";
-      _emailController.text = widget.userData?.email ?? "";
-      _stateController.text = widget.userData?.state ?? "";
-      _cityController.text = widget.userData?.city ?? "";
-      _phoneController.text = widget.userData?.phoneNumber ?? "";
+    if (mounted) {
+      if (widget.isEditing) {
+        _nameController.text = widget.userData?.name ?? "";
+        _emailController.text = widget.userData?.email ?? "";
+        _stateController.text = widget.userData?.state ?? "";
+        _cityController.text = widget.userData?.city ?? "";
+        _phoneController.text = widget.userData?.phoneNumber ?? "";
+      }
+      _determinePosition();
     }
-    _determinePosition();
   }
 
+// for automatic location finder city and state according to device location
+//using  geolocator package in flutter and Geocoding package
   Future _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -73,6 +76,7 @@ class AddEditUserScreenState extends State<AddEditUserScreen> {
     });
   }
 
+//this function is used for submit the input data  into database
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       if (widget.isEditing) {
@@ -165,9 +169,11 @@ class AddEditUserScreenState extends State<AddEditUserScreen> {
                     value: 'Male',
                     groupValue: _selectedGender,
                     onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value!;
-                      });
+                      if (mounted) {
+                        setState(() {
+                          _selectedGender = value!;
+                        });
+                      }
                     },
                   ),
                   RadioListTile<String>(
@@ -175,9 +181,11 @@ class AddEditUserScreenState extends State<AddEditUserScreen> {
                     value: 'Female',
                     groupValue: _selectedGender,
                     onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value!;
-                      });
+                      if (mounted) {
+                        setState(() {
+                          _selectedGender = value!;
+                        });
+                      }
                     },
                   ),
                 ],
@@ -191,5 +199,16 @@ class AddEditUserScreenState extends State<AddEditUserScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _cityController.dispose();
+    _emailController.dispose();
+    _nameController.dispose();
+    _phoneController.dispose();
+   
+
+    super.dispose();
   }
 }
